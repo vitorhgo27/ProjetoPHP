@@ -1,5 +1,5 @@
 <?php
-require 'conexao.php';
+require '../conexao.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -10,21 +10,21 @@ require 'conexao.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <?php include('navbar.php'); ?>
+    <?php include('../navbar.php'); ?>
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4>Visualizar Usuário
-                                <a href="index.php" class="btn btn-danger float-end">Voltar</a>
+                                <a href="../home.php" class="btn btn-danger float-end">Voltar</a>
                             </h4>
                         </div>
                         <div class="card-body">
                                 <?php
-                            if (isset($_GET['Id_user'])) {
-                                $usuario_id = mysqli_real_escape_string($conexao, $_GET['Id_user']);
-                                $sql = "SELECT * FROM users WHERE Id_user = '$usuario_id'";
+                            if (isset($_GET['Id_User'])) {
+                                $usuario_id = mysqli_real_escape_string($conexao, $_GET['Id_User']);
+                                $sql = "SELECT * FROM users WHERE Id_User = '$usuario_id'";
                                 $query = mysqli_query($conexao, $sql);
 
                                 if (mysqli_num_rows($query) > 0) {
@@ -33,19 +33,19 @@ require 'conexao.php';
                                 <div class="mb-3">
                                     <label>Nome</label>
                                     <p class="form-control">
-                                        <?=$usuario['username'];?>
+                                        <?=$usuario['Username'];?>
                                     </p>
                                 </div>
                                 <div class="mb-3">
                                     <label>Email</label>
                                     <p class="form-control">
-                                        <?=$usuario['email'];?>
+                                        <?=$usuario['Email'];?>
                                     </p>
                                 </div>
                                 <div class="mb-3">
                                     <label>Data de Nascimento</label>
                                     <p class="form-control">
-                                        <?=date('d/m/Y', strtotime($usuario['data_nascimento']));?>
+                                        <?=date('d/m/Y', strtotime($usuario['Data_Nascimento']));?>
                                     </p>
                                 </div>
                                 <?php
@@ -54,7 +54,7 @@ require 'conexao.php';
                                 }
                             }
                             ?>
-                            <a href="usuario-edit.php?Id_user=<?=$usuario['Id_user']?>" class="btn btn-success btn-sm"><i class="bi bi-trash3"></i> Editar</a>
+                            <a href="usuario-edit.php?Id_User=<?=$usuario['Id_User']?>" class="btn btn-success btn-sm"><i class="bi bi-trash3"></i> Editar</a>
                         </div>
                     </div>
                 </div>

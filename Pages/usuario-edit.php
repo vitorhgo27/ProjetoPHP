@@ -1,6 +1,6 @@
 <?php
-session_start();
-require 'conexao.php';
+require '../conexao.php';
+require '../auth.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -11,39 +11,39 @@ require 'conexao.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <?php include('navbar.php'); ?>
+    <?php include('../navbar.php'); ?>
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4>Editar Usuário
-                                <a href="index.php" class="btn btn-danger float-end">Voltar</a>
+                                <a href="../home.php" class="btn btn-danger float-end">Voltar</a>
                             </h4>
                         </div>
                         <div class="card-body">
                             <?php
-                            if (isset($_GET['Id_user'])) {
-                                $usuario_id = mysqli_real_escape_string($conexao, $_GET['Id_user']);
-                                $sql = "SELECT * FROM users WHERE Id_user = '$usuario_id'";
+                            if (isset($_GET['Id_User'])) {
+                                $usuario_id = mysqli_real_escape_string($conexao, $_GET['Id_User']);
+                                $sql = "SELECT * FROM Users WHERE Id_User = '$usuario_id'";
                                 $query = mysqli_query($conexao, $sql);
 
                                 if (mysqli_num_rows($query) > 0) {
                                     $usuario = mysqli_fetch_array($query);
                             ?>
-                            <form action="acoes.php" method="POST">
-                                <input class="hidden" name="usuario_id" value="<?=$usuario['Id_user']?>">
+                            <form action="../acoes.php" method="POST">
+                                <input class="hidden" name="usuario_id" value="<?=$usuario['Id_User']?>">
                                 <div class="mb-3">
                                     <label>Nome</label>
-                                    <input type="text" name="username" value="<?=$usuario['username']?>" class="form-control">
+                                    <input type="text" name="username" value="<?=$usuario['Username']?>" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label>Email</label>
-                                    <input type="text" name="email" value="<?=$usuario['email']?>" class="form-control">
+                                    <input type="text" name="email" value="<?=$usuario['Email']?>" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label>Data de Nascimento</label>
-                                    <input type="date" name="data_nascimento" value="<?=$usuario['data_nascimento']?>" class="form-control">
+                                    <input type="date" name="data_nascimento" value="<?=$usuario['Data_Nascimento']?>" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label>Senha</label>

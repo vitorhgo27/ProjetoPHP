@@ -4,8 +4,8 @@ function criarClientes($conexao){
 	$sql = "CREATE TABLE IF NOT EXISTS Clientes(
 		Cod_Cliente BIGINT PRIMARY KEY AUTO_INCREMENT,
 		Nome_Cliente VARCHAR(100) NOT NULL,
-		Nasc_Clente DATE,
-		Tel_Cliente INT,
+		Nasc_Cliente DATE,
+		Tel_Cliente BIGINT,
 		Email_Cliente VARCHAR(100),
 		Doc_Cliente BIGINT,
 		CEP_Cliente INT,

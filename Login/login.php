@@ -1,7 +1,7 @@
 <?php
 session_start();
-require 'conexao.php';
-require 'database.php';
+require '../conexao.php';
+require '../database.php';
 inicializarBanco($conexao);
 ?>
 
@@ -15,9 +15,9 @@ inicializarBanco($conexao);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   </head>
   <body>
-    <?php include('navbar.php'); ?>
+    <?php include('../navbar.php'); ?>
         <div class="container mt-4">
-        <?php include('mensagem.php'); ?>
+        <?php include('../mensagem.php'); ?>
             <form action="autenticacao.php" method="POST">
                 <input type="username" name="username" required>
                 <input type="password" name="senha" required>

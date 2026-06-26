@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require 'conexao.php';
+require '../conexao.php';
 
 $username = mysqli_real_escape_string($conexao, $_POST['username']);
 $senha = $_POST['senha'];
@@ -19,13 +19,13 @@ if (mysqli_num_rows($query) == 1) {
         $_SESSION['usuario_nome'] = $usuario['Username'];
         $_SESSION['login_time'] = time();
 
-        header('Location: home.php');
+        header('Location: ../home.php');
         exit;
     }
 }
 
 $_SESSION['mensagem'] = 'Username ou senha inválidos';
-header('Location: home.php');
+header('Location: ../home.php');
 exit;
 
 ?>

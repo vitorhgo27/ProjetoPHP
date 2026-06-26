@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'conexao.php';
+require '../../conexao.php';
 
 if (isset($_POST['create_usuario'])) {
     $nome = mysqli_real_escape_string($conexao, trim($_POST['username']));
@@ -14,7 +14,7 @@ if (isset($_POST['create_usuario'])) {
     empty($_POST['data_nascimento']) ||
     empty($_POST['senha'])) {
     $_SESSION['mensagem'] = 'Preencha todos os campos.';
-    header('Location: home.php');
+    header('Location: ../../home.php');
     exit;
     }
 
@@ -24,11 +24,11 @@ if (isset($_POST['create_usuario'])) {
 
     if (mysqli_affected_rows($conexao) > 0) {
         $_SESSION['mensagem'] = 'Usuário criado com sucesso';
-        header('Location: home.php');
+        header('Location: ../../home.php');
         exit;
     }else {
         $_SESSION['mensagem'] = 'Usuário não foi criado';
-        header('Location: home.php');
+        header('Location: ../../home.php');
         exit;
     }
 }
@@ -39,7 +39,7 @@ if (isset($_POST['update_usuario'])) {
     $nome = mysqli_real_escape_string($conexao, trim($_POST['username']));
     $email = mysqli_real_escape_string($conexao, trim($_POST['email']));
     $data_nascimento = mysqli_real_escape_string($conexao, trim($_POST['data_nascimento']));
-    $senha = mysqli_real_escape_string($conexao, trim($_POST['usuario_id']));
+    $senha = mysqli_real_escape_string($conexao, trim($_POST['senha']));
 
     $sql = "UPDATE users SET username = '$nome', email = '$email', data_nascimento = '$data_nascimento'";
 
@@ -53,11 +53,11 @@ if (isset($_POST['update_usuario'])) {
 
     if (mysqli_affected_rows($conexao) > 0) {
         $_SESSION['mensagem'] = 'Usuário atualizado com sucesso';
-        header('Location: home.php');
+        header('Location: ../../home.php');
         exit;
     }else {
         $_SESSION['mensagem'] = 'Usuário não foi atualizado';
-        header('Location: home.php');
+        header('Location: ../../home.php');
         exit;
     }
 }
@@ -71,11 +71,11 @@ if (isset($_POST['delete_usuario'])) {
 
     if (mysqli_affected_rows($conexao) > 0) {
         $_SESSION['mensagem'] = 'Usuário Deletado com Sucesso';
-        header('Location: home.php');
+        header('Location: ../../home.php');
         exit;
     } else {
         $_SESSION['mensagem'] = 'Usuário Não Deletado';
-        header('Location: home.php');
+        header('Location: ../../home.php');
         exit;
     }
 }
@@ -92,14 +92,14 @@ if (isset($_POST['update_senha'])) {
     $query = mysqli_query($conexao, $sql);
     if (mysqli_num_rows($query) == 0) {
         $_SESSION['mensagem'] = 'Usuário ou e-mail incorreto';
-        header('Location: senha.php');
+        header('Location: ../../Login/senha.php');
         exit;
     }
     $usuario = mysqli_fetch_assoc($query);
     $usuario_id = $usuario['Id_User'];
     if (empty($senha)) {
         $_SESSION['mensagem'] = 'Informe uma nova senha';
-        header('Location: senha.php');
+        header('Location: ../../Login/senha.php');
         exit;
     }
 
@@ -112,11 +112,11 @@ if (isset($_POST['update_senha'])) {
         mysqli_query($conexao, $sql);
         if (mysqli_affected_rows($conexao) > 0) {
             $_SESSION['mensagem'] = 'Senha atualizada com sucesso';
-            header('Location: login.php');
+            header('Location: ../../Login/login.php');
             exit;
         } else {
             $_SESSION['mensagem'] = 'Senha não foi atualizada';
-            header('Location: login.php');
+            header('Location: ../../Login/login.php');
             exit;
         }
     }

@@ -1,6 +1,6 @@
 <?php
-require '../conexao.php';
-require '../auth.php';
+require '../../conexao.php';
+require '../../auth.php';
 ?>
 
 <!doctype html>
@@ -8,40 +8,36 @@ require '../auth.php';
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Projeto PHP</title>
+    <title>Projeto PHP - Novo Cliente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <?php include('../navbar.php'); ?>
+    <?php include('../../navbar.php'); ?>
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Adicionar Usuário
-                                <a href="../home.php" class="btn btn-danger float-end">Voltar</a>
+                            <h4>Adicionar Cliente
+                                <a href="../../home.php" class="btn btn-danger float-end">Voltar</a>
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form action="../acoes.php" method="POST">
+                            <form action="../../Modules/Cliente/clienteController.php" method="POST">
                                 <div class="mb-3">
                                     <label>Nome</label>
-                                    <input type="text" name="username" class="form-control">
+                                    <input type="text" name="nome-cliente" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label>Email</label>
-                                    <input type="text" name="email" class="form-control">
+                                    <input type="text" name="email-cliente" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label>Data de Nascimento</label>
-                                    <input type="date" name="data_nascimento" class="form-control">
+                                    <input type="date" name="data_nascimento-cliente" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label>Senha</label>
-                                    <input type="password" name="senha" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" name="create_usuario" class="btn btn-primary">Salvar</button>
+                                    <button type="submit" name="create_cliente" class="btn btn-primary">Salvar</button>
                                 </div>
                             </form>
                         </div>

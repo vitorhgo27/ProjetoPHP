@@ -18,6 +18,73 @@ inicializarBanco($conexao);
     <?php include('navbar.php'); ?>
     <div class="container mt-4">
         <?php include('mensagem.php'); ?>
+                <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4> Agendamentos
+                            <a href="/pages/agendaPages/agenda-create.php" class="btn btn-primary float-end">Adicionar Agendamento</a>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Telefone</th>
+				                    <th>Profissional</th>
+				                    <th>Auxiliar</th>
+				                    <th>Procedimento</th>
+				                    <th>Data</th>
+				                    <th>Horário</th>
+				                    <th>Status</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql = 'SELECT A.Cod_Agenda, C.Nome_Cliente, C.Tel_Cliente, P1.Nome_Profissional as Profissional, P2.Nome_Profissional AS Auxiliar,
+					                    S.Descricao_Servico, A.Data_Agenda, A.Hora_Agenda, A.Status_Agenda
+					                    FROM Agenda A
+					                    LEFT JOIN Clientes C ON C.Cod_Cliente = A.Cliente_Agenda
+					                    LEFT JOIN Profissional P1 ON P1.Cod_Profissional = A.Profissional_Agenda
+					                    LEFT JOIN Profissional P2 ON P2.Cod_Profissional = A.Auxiliar_Agenda
+					                    LEFT JOIN Servicos S ON S.Cod_Servico = Servico_Agenda
+					                    ORDER BY A.Data_Agenda ASC, A.Hora_Agenda ASC';
+                                $agendamentos = mysqli_query($conexao, $sql);
+                                if (mysqli_num_rows($agendamentos) > 0) {
+                                    foreach($agendamentos as $agenda) {
+                                ?>
+                                <tr>
+                                    <td><?=$agenda['Nome_Cliente']?></td>
+                                    <td><?=$agenda['Tel_Cliente']?></td>
+                                    <td><?=$agenda['Profissional']?></td>
+                                    <td><?=$agenda['Auxiliar']?></td>
+                                    <td><?=$agenda['Data_Agenda']?></td>
+                                    <td><?=$agenda['Hora_Agenda']?></td>
+                                    <td><?=$agenda['Status_Agenda']?></td>
+                                    <td>
+                                        <a href="/pages/agendaPages/agenda-home.php?Cod_Agenda=<?=$agenda['Cod_Agenda']?>" class="btn btn-secondary btn-sm"><span class="bi bi-eye-fill"></span> Iniciar </a>
+                                        <a href="/pages/agendaPages/agenda-edit.php?Cod_Agenda=<?=$agenda['Cod_Agenda']?>" class="btn btn-success btn-sm"><span class="bi bi-sliders"></span> Editar</a>
+                                        <form action="/Modules/Agenda/agendaController.php" method="POST" class="d-inline">
+                                            <button onclick="return confirm('Deseja cancelar Agendamento?')" type="submit" name="cancel_agenda" value="<?=$agenda['Cod_Agenda']?>" class="btn btn-danger btn-sm"><span class="bi bi-trash3"></span>
+                                                Cancelar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php
+                                } 
+                                } else {
+                                    print '<h5>Nenhum Agendamento Encontrado</h5>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -62,60 +129,7 @@ inicializarBanco($conexao);
                                 <?php
                                 } 
                                 } else {
-                                    print '<h5>Nenhum Usuário Encontrado</h5>';
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4> Lista de Usuários
-                            <a href="/pages/userPages/usuario-create.php" class="btn btn-primary float-end">Adicionar Usuário</a>
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nome</th>
-                                    <th>Email</th>
-                                    <th>Data de Nascimento</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $sql = 'SELECT * FROM users';
-                                $usuarios = mysqli_query($conexao, $sql);
-                                if (mysqli_num_rows($usuarios) > 0) {
-                                    foreach($usuarios as $usuario) {
-                                ?>
-                                <tr>
-                                    <td><?=$usuario['Id_User']?></td>
-                                    <td><?=$usuario['Username']?></td>
-                                    <td><?=$usuario['Email']?></td>
-                                    <td><?=date('d/m/Y', strtotime($usuario['Data_Nascimento']))?></td>
-                                    <td>
-                                        <a href="/pages/userPages/usuario-view.php?Id_User=<?=$usuario['Id_User']?>" class="btn btn-secondary btn-sm"><span class="bi bi-eye-fill"></span> Visualizar</a>
-                                        <a href="/pages/userPages/usuario-edit.php?Id_User=<?=$usuario['Id_User']?>" class="btn btn-success btn-sm"><span class="bi bi-sliders"></span> Editar</a>
-                                        <form action="User/userController.php" method="POST" class="d-inline">
-                                            <button onclick="return confirm('Deseja excluir usuário?')" type="submit" name="delete_usuario" value="<?=$usuario['Id_User']?>" class="btn btn-danger btn-sm"><span class="bi bi-trash3"></span>
-                                                Excluir
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php
-                                } 
-                                } else {
-                                    print '<h5>Nenhum Usuário Encontrado</h5>';
+                                    print '<h5>Nenhum Cliente Encontrado</h5>';
                                 }
                                 ?>
                             </tbody>

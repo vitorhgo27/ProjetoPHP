@@ -16,7 +16,7 @@ if (isset($_POST['create_cliente'])) {
     exit;
     }
 
-    $sql = "INSERT INTO Clientes (Nome_Cliente, Email_Cliente, Nasc_Clente) VALUES ('$nome', '$email', '$data_nascimento')";
+    $sql = "INSERT INTO Clientes (Nome_Cliente, Email_Cliente, Nasc_Cliente) VALUES ('$nome', '$email', '$data_nascimento')";
 
     mysqli_query($conexao, $sql);
 

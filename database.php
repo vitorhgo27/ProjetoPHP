@@ -1,6 +1,10 @@
 <?php
 require_once 'Modules/User/UserTable.php';
 require_once 'Modules/Cliente/clienteTable.php';
+require_once 'Modules/Profissional/profissionalTable.php';
+require_once 'Modules/Servico/servicoTable.php';
+require_once 'Modules/Agenda/agendaTable.php';
+
 
 function criarBanco($conexao) {
 	$sql = "CREATE TABLE IF NOT EXISTS schema_version (
@@ -10,6 +14,10 @@ function criarBanco($conexao) {
 
 	criarUsers($conexao);
 	criarClientes($conexao);
+	criarProfissional($conexao);
+	criarServicos($conexao);
+	criarAgenda($conexao);
+
 }
 
 

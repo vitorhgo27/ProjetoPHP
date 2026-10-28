@@ -3,16 +3,12 @@ Estado inicial: PENDENTE. Nenhum log ou captura comprobatória foi produzido.
 
 | Evidência | Arquivo ou URL a informar | Estado |
 |---|---|---|
-| Repositório acessível | PREENCHER URL | Pendente |
-| Plano GCS na main e SHA da baseline | PREENCHER | Pendente |
-| Regra ativa de main sem bypass | main-protecao.png, a criar | Pendente |
+| Repositório acessível | (https://github.com/vitorhgo27/ProjetoPHP) | Feito |
+| Plano GCS na main e SHA da baseline | (https://github.com/vitorhgo27/ProjetoPHP/blob/main/PLANO-GCS.md) | Feito |
+| Regra ativa de main sem bypass | main-protecao.png, a criar | Feito |
 | Push recusado pela proteção de main | push-main-recusado.txt, a coletar | Pendente |
 | Par com escrita e convite aceito | colaborador-escrita.png, a criar | Pendente |
 | PR revisado pelo par | PREENCHER URL | Pendente |
-| Environment staging | staging.png, a criar | Pendente |
-| Production com proprietário como único required reviewer | production.png, a criar | Pendente |
+| Environment staging | (https://github.com/vitorhgo27/ProjetoPHP/settings/environments) | Feito |
+| Production com proprietário como único required reviewer | (https://github.com/vitorhgo27/ProjetoPHP/settings/environments) | Feito |
 | Execução aguardando e depois aprovada | PREENCHER URL e capturas | Pendente |
-
-Registrar data, comando de push, SHA e código de saída. Falha de autenticação,
-rede ou non-fast-forward não comprova proteção de main.
-Publicar evidências por novo PR. Não incluir tokens ou senhas.

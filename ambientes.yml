@@ -1,0 +1,36 @@
+name: Ambientes - demonstracao GCS
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validar:
+    name: Validar main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exigir main
+        run: test "$GITHUB_REF" = "refs/heads/main"
+      - uses: actions/checkout@v4
+      - name: Verificar sintaxe PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            php -l "$file"
+          done < <(find . -type f -name '*.php' -not -path './.git/*' -print0)
+  staging:
+    name: Demonstrar staging
+    needs: validar
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    steps:
+      - run: echo "Staging - commit $GITHUB_SHA. Demonstracao sem deploy real." >> "$GITHUB_STEP_SUMMARY"
+  production:
+    name: Demonstrar production
+    needs: staging
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    steps:
+      - run: echo "Production - commit $GITHUB_SHA. Demonstracao sem deploy real." >> "$GITHUB_STEP_SUMMARY"

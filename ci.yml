@@ -1,0 +1,23 @@
+name: Validacao PHP
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lint:
+    name: PHP lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar sintaxe PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          php --version
+          mapfile -d '' files < <(find . -type f -name '*.php' -not -path './.git/*' -print0)
+          if (( ${#files[@]} == 0 )); then exit 1; fi
+          for file in "${files[@]}"; do php -l "$file"; done

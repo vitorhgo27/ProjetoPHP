@@ -1,0 +1,62 @@
+name: CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Versao da Release (ex: v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Verificar sintaxe PHP
+        run: find . -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      - name: Executar testes automatizados
+        run: |
+          for teste in tests/*_test.php; do
+            [ -f "$teste" ] || continue
+            php "$teste" || exit 1
+          done
+
+  production:
+    needs: staging
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+
+      - name: Publicar Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Versao invalida"
+            exit 1
+          fi
+
+          gh release create "$TAG" \
+            --target "$GITHUB_SHA" \
+            --title "$TAG" \
+            --generate-notes \
+            --latest

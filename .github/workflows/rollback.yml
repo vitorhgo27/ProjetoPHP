@@ -1,0 +1,57 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag da Release de destino'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Validar Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release view "$TAG" \
+            --repo "$GITHUB_REPOSITORY"
+
+      - name: Recuperar versao anterior
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Verificar sintaxe PHP
+        run: |
+          find . -name "*.php" -print0 |
+          xargs -0 -n1 php -l
+
+      - name: Simular deploy da versao
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          echo "Simulando deploy da versao $TAG"
+
+      - name: Atualizar Release oficial
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release edit "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --latest

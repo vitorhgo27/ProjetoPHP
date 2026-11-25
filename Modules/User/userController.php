@@ -2,32 +2,76 @@
 session_start();
 require '../../conexao.php';
 
-if (isset($_POST['create_usuario'])) {
-    $nome = mysqli_real_escape_string($conexao, trim($_POST['username']));
-    $email = mysqli_real_escape_string($conexao, trim($_POST['email']));
-    $data_nascimento = mysqli_real_escape_string($conexao, trim($_POST['data_nascimento']));
-    $senha = isset($_POST['senha']) ? mysqli_real_escape_string($conexao, password_hash(trim($_POST['senha']), PASSWORD_DEFAULT)) : '';
+require_once __DIR__ .
+    '/../Modules/validacao_usuario.php';
 
+if (isset($_POST['create_usuario'])) {
+
+    // Verifica o preenchimento dos campos obrigatorios.
     if (
-    empty($_POST['username']) ||
-    empty($_POST['email']) ||
-    empty($_POST['data_nascimento']) ||
-    empty($_POST['senha'])) {
-    $_SESSION['mensagem'] = 'Preencha todos os campos.';
-    header('Location: ../../home.php');
-    exit;
+        empty($_POST['username']) ||
+        empty($_POST['email']) ||
+        empty($_POST['data_nascimento']) ||
+        empty($_POST['senha'])
+    ) {
+        $_SESSION['mensagem'] = 'Preencha todos os campos.';
+        header('Location: ../../home.php');
+        exit;
     }
 
-    $sql = "INSERT INTO users (username, email, data_nascimento, senha) VALUES ('$nome', '$email', '$data_nascimento', '$senha')";
+    // NOVA REGRA DE NEGOCIO - ISSUE #5
+    // Valida a idade antes de cadastrar o usuario.
+    if (!validarIdade(trim($_POST['data_nascimento']))) {
+        $_SESSION['mensagem'] =
+            'Informe uma data de nascimento valida. O usuario deve possuir pelo menos 18 anos.';
+
+        header('Location: ../../home.php');
+        exit;
+    }
+
+    // Trata os dados recebidos do formulario.
+    $nome = mysqli_real_escape_string(
+        $conexao,
+        trim($_POST['username'])
+    );
+
+    $email = mysqli_real_escape_string(
+        $conexao,
+        trim($_POST['email'])
+    );
+
+    $data_nascimento = mysqli_real_escape_string(
+        $conexao,
+        trim($_POST['data_nascimento'])
+    );
+
+    $senha = mysqli_real_escape_string(
+        $conexao,
+        password_hash(
+            trim($_POST['senha']),
+            PASSWORD_DEFAULT
+        )
+    );
+
+    // Realiza o cadastro do usuario.
+    $sql = "INSERT INTO users
+            (username, email, data_nascimento, senha)
+            VALUES
+            ('$nome', '$email', '$data_nascimento', '$senha')";
 
     mysqli_query($conexao, $sql);
 
+    // Verifica se o cadastro foi realizado.
     if (mysqli_affected_rows($conexao) > 0) {
-        $_SESSION['mensagem'] = 'Usuário criado com sucesso';
+        $_SESSION['mensagem'] =
+            'Usuário criado com sucesso';
+
         header('Location: ../../home.php');
         exit;
-    }else {
-        $_SESSION['mensagem'] = 'Usuário não foi criado';
+    } else {
+        $_SESSION['mensagem'] =
+            'Usuário não foi criado';
+
         header('Location: ../../home.php');
         exit;
     }
